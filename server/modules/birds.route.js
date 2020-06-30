@@ -15,5 +15,10 @@ router.get( '/', ( req, res )=>{
         res.send( 500 );
     })
 }) // end /birds GET
+
+router.post( '/', ( req, res )=>{
+    console.log( 'in /birds POST:', req.body );
+    res.send( 'growl' );
+})
 // export
 module.exports = router;
