@@ -15,6 +15,7 @@ function addBird(){
         data: birdToSend
     }).then( function( response ){
         console.log( 'back from POST:', response );
+        getBirds();
     }).catch( function( err ){
         console.log( err );
         alert( 'no workly' );

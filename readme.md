@@ -44,7 +44,7 @@ pool.query( queryString ).then( ( result )=>{
 - here, we'll use an example object that has 2 keys: "name" & "color"
 
 ```
-let queryString = 'INSERT INTRO TABLENAME ( "name", "color" ) VALUES ( $1, $2 )';
+let queryString = 'INSERT INTO TABLENAME ( "name", "color" ) VALUES ( $1, $2 )';
 pool.query( queryString, [ req.body.name, req.body.color ] ).then( ( result )=>{
     res.sendStatus( 201 );
 }).catch( ( err )=>{
