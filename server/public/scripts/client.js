@@ -2,7 +2,7 @@ $( document ).ready( onReady );
 
 let birds = [];
 let editId = null;
-
+// CREATE
 function addBird(){
     // get user input and place into an object
     const birdToSend = {
@@ -25,7 +25,7 @@ function addBird(){
         alert( 'no workly' );
     }) // end AJAX
 }
-
+// DELETE
 function deleteBird(){
     console.log( 'in deleteBird:', $( this ).data( 'id' ) );
     // send this to server via a delete request
@@ -40,7 +40,7 @@ function deleteBird(){
         alert( 'problem!' );
     })
 }
-
+// sets user interface for UPDATE
 function editBird(){
     console.log( 'in editBird:', $( this ).data( 'index' ) );
     const editBird = birds[ $( this ).data( 'index' ) ];
@@ -48,7 +48,7 @@ function editBird(){
     $( '#firstNameEditIn' ).val( editBird.first_name );
     editId = editBird.id;
 }
-
+// READ
 function getBirds(){
     $.ajax({
         type: 'GET',
@@ -76,6 +76,7 @@ function getBirds(){
 }
 
 function onReady(){
+    // set up
     getBirds();
     // click handlers for elements already on screen at load
     $( '#addBirdButton' ).on( 'click', addBird );
@@ -84,7 +85,7 @@ function onReady(){
     $( '#birdsOut' ).on( 'click', '.deleteBirdButton', deleteBird );
     $( '#birdsOut' ).on( 'click', '.editBirdButton', editBird );  
 }
-
+// executes UPDATE
 function saveBird(){
     console.log( 'in saveBird' );
     // get user input and place in an object to send
