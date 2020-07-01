@@ -13,7 +13,7 @@ router.delete( '/:id' , ( req, res )=>{
         console.log( err );
         res.send( 500 );
     })
-}) // end /birds DELETE 
+}) // end /birds DELETE route, DELETE query, "Delete" in CRUD 
 
 router.get( '/', ( req, res )=>{
     console.log( '/birds GET' );
@@ -26,7 +26,7 @@ router.get( '/', ( req, res )=>{
         // error
         res.send( 500 );
     })
-}) // end /birds GET
+}) // end /birds GET route, SELECT query, "Read" in CRUD
 
 router.post( '/', ( req, res )=>{
     console.log( 'in /birds POST:', req.body );
@@ -39,6 +39,18 @@ router.post( '/', ( req, res )=>{
             console.log( err );
             res.sendStatus( 500 );
         }) //emd query
-})
+}) // end /birds POST route, INSERT query, "Create" in CRUD
+
+router.put( '/:id', (req, res)=>{
+    console.log( '/birds PUT:', req.body, req.params.id);
+    // update first name of the bird with this ID
+    const queryString = `UPDATE birds SET first_name='${ req.body.new_first_name }' WHERE id=${ req.params.id };`;
+    pool.query( queryString ).then( ( results )=>{
+        res.sendStatus( 200 );
+    }).catch( ( err )=>{
+        console.log( err );
+        res.sendStatus( 500 );
+    })
+}) // end /birds PUT, UPDATE query, "Update" in CRUD
 // export
 module.exports = router;

@@ -1,6 +1,7 @@
 $( document ).ready( onReady );
 
 let birds = [];
+let editId = null;
 
 function addBird(){
     // get user input and place into an object
@@ -45,6 +46,7 @@ function editBird(){
     const editBird = birds[ $( this ).data( 'index' ) ];
     console.log( 'the bird u want is:',editBird  );
     $( '#firstNameEditIn' ).val( editBird.first_name );
+    editId = editBird.id;
 }
 
 function getBirds(){
@@ -85,4 +87,21 @@ function onReady(){
 
 function saveBird(){
     console.log( 'in saveBird' );
+    // get user input and place in an object to send
+    const dataToSend = {
+        new_first_name: $( '#firstNameEditIn').val()
+    }
+    // send put req to server
+    // include id & data we want to change
+    $.ajax({
+        type: 'PUT',
+        url: '/birds/' + editId,
+        data: dataToSend
+    }).then( function( response ){
+        console.log( 'back from PUT with:', response );
+        getBirds();
+    }).catch( function( err ){
+        console.log( err );
+        alert( 'nope...' );
+    })
 }
