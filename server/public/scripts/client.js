@@ -1,5 +1,6 @@
 $( document ).ready( onReady );
 
+let birds = [];
 
 function addBird(){
     // get user input and place into an object
@@ -39,6 +40,13 @@ function deleteBird(){
     })
 }
 
+function editBird(){
+    console.log( 'in editBird:', $( this ).data( 'index' ) );
+    const editBird = birds[ $( this ).data( 'index' ) ];
+    console.log( 'the bird u want is:',editBird  );
+    $( '#firstNameEditIn' ).val( editBird.first_name );
+}
+
 function getBirds(){
     $.ajax({
         type: 'GET',
@@ -47,7 +55,7 @@ function getBirds(){
         console.log( 'back from GET:', response );
         let el = $( '#birdsOut' );
         el.empty();
-
+        birds = response;
         for( let i=0; i< response.length; i++ ){
             // in our button we are using "data-id" to hold the id of each bird
             el.append( `<li>
@@ -56,6 +64,7 @@ function getBirds(){
                 ${ response[i].last_name }: 
                 born ${ response[i].dob.split( "T" )[0] }, 
                 ${ response[i].height } tall
+                <button class="editBirdButton" data-index=${ i }>Edit</button>
             </li>`)
         }
     }).catch( function( err ){
@@ -66,7 +75,14 @@ function getBirds(){
 
 function onReady(){
     getBirds();
+    // click handlers for elements already on screen at load
     $( '#addBirdButton' ).on( 'click', addBird );
+    $( '#saveBirdButton' ).on( 'click', saveBird );
     // since each deleteBirdButton is dynamically created, we will check their parent for click events
     $( '#birdsOut' ).on( 'click', '.deleteBirdButton', deleteBird );
+    $( '#birdsOut' ).on( 'click', '.editBirdButton', editBird );  
+}
+
+function saveBird(){
+    console.log( 'in saveBird' );
 }
