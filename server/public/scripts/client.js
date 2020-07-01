@@ -25,13 +25,18 @@ function addBird(){
 }
 
 function deleteBird(){
-    console.log( 'in deleteBird' );
-}
-
-function onReady(){
-    getBirds();
-    $( '#addBirdButton' ).on( 'click', addBird );
-    $( '#birdsOut' ).on( 'click', '.deleteBirdButton', deleteBird );
+    console.log( 'in deleteBird:', $( this ).data( 'id' ) );
+    // send this to server via a delete request
+    $.ajax({
+        type: "DELETE",
+        url: '/birds/' + $( this ).data( 'id' )
+    }).then( function( response ){
+        console.log( 'back from delete with:', response );
+        getBirds();
+    }).catch( function( err ){
+        console.log( err );
+        alert( 'problem!' );
+    })
 }
 
 function getBirds(){
@@ -44,8 +49,9 @@ function getBirds(){
         el.empty();
 
         for( let i=0; i< response.length; i++ ){
+            // in our button we are using "data-id" to hold the id of each bird
             el.append( `<li>
-                <button class="deleteBirdButton">Delete</button>
+                <button class="deleteBirdButton" data-id=${ response[i].id }>Delete</button>
                 ${ response[i].first_name }
                 ${ response[i].last_name }: 
                 born ${ response[i].dob.split( "T" )[0] }, 
@@ -56,4 +62,11 @@ function getBirds(){
         console.log( err );
         alert( 'nope' );
     }) //end AJAX
+}
+
+function onReady(){
+    getBirds();
+    $( '#addBirdButton' ).on( 'click', addBird );
+    // since each deleteBirdButton is dynamically created, we will check their parent for click events
+    $( '#birdsOut' ).on( 'click', '.deleteBirdButton', deleteBird );
 }

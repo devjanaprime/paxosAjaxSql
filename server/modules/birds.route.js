@@ -3,6 +3,18 @@ const express = require( 'express' );
 const router = express.Router();
 const pool = require( './pool' );
 // routes
+router.delete( '/:id' , ( req, res )=>{
+    console.log( '/birds DELETE hit:', req.params.id );
+    // have pool run a delete
+    let queryString = `DELETE FROM "birds" WHERE "id"=${ req.params.id };`;
+    pool.query( queryString ).then( ( results )=>{
+        res.send( 200 );
+    }).catch( ( err )=>{
+        console.log( err );
+        res.send( 500 );
+    })
+}) // end /birds DELETE 
+
 router.get( '/', ( req, res )=>{
     console.log( '/birds GET' );
     /// - query: SELECT * FROM "birds" - ///
